@@ -6,11 +6,22 @@ services:
       - 27017:27017
     volumes:
       - "mongodata:/data/db"
+    networks:
+      - mongo
 
   mongo-express:
     image: mongo-express:0.42
     ports:
       - 8081:8081
+    depends_on:
+      - mongo
+    networks:
+      - mongo
 
 volumes:
   mongodata:
+    driver: local
+
+networks:
+  mongo:
+    external: false
