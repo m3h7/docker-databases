@@ -1,0 +1,14 @@
+version: '3'
+services:
+  cloudant-developer:
+    build:
+      context: .
+    image: ibmcom/cloudant-developer:latest
+    container_name: cloudant-developer
+    hostname: cloudant.local
+    ports:
+      - "8899:80"
+    volumes:
+      - cloudant-developer:/srv
+volumes:
+  cloudant-developer:
