@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  couchdb:
+    image: couchdb:3
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: nimda
+    ports:
+      - 5984:5984
+    volumes:
+      - "couchdb-data:/opt/couchdb/data"
+
+volumes:
+  couchdb-data:
