@@ -1,0 +1,17 @@
+# Minukube local persistent volume
+# Ref: https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-vol-1
+  labels:
+    volume: minio-volume
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /data/minio-vol-1/

@@ -1,0 +1,36 @@
+---
+# Internal Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-service
+  namespace: database
+  labels:
+    app: minio
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: minio
+
+---
+# Service to node port
+kind: Service
+apiVersion: v1
+metadata:
+  name: minio-nodeport-service
+  namespace: database
+  labels:
+    app: minio
+spec:
+  type: NodePort      # NodePort service
+  ports:
+  - port: 9000
+    nodePort: 30900   # external port
+    protocol: TCP
+  selector:
+    app: minio
