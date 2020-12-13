@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: couchdb
+  namespace: database
+spec:
+  selector:
+    matchLabels:
+      app: couchdb  # has to match .spec.template.metadata.labels
+  serviceName: "couchdb-service"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: couchdb
+    spec:
+      containers:
+      - name: couchdb
+        image: couchdb:3.1
+        env:
+        - name: NODE_NETBIOS_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NODENAME
+          value: $(NODE_NETBIOS_NAME).couchdb-service # FQDN in vm.args
+        - name: COUCHDB_USER
+          valueFrom:
+            secretKeyRef:
+              name: couchdb-secret
+              key: COUCHDB_USER
+        - name: COUCHDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: couchdb-secret
+              key: COUCHDB_PASSWORD
+        - name: COUCHDB_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: couchdb-secret
+              key: COUCHDB_SECRET
+        - name: ERL_FLAGS
+          value: "-name couchdb@$(NODENAME)"
+        - name: ERL_FLAGS
+          value: "-setcookie secret" # the “password” used when nodes connect to each other.
+        ports:
+        - name: couchdb
+          containerPort: 5984
+        - name: epmd
+          containerPort: 4369
+        - containerPort: 9100
+        volumeMounts:
+          - name: couchdb-pvc
+            mountPath: /opt/couchdb/data
+  volumeClaimTemplates:
+  - metadata:
+      name: couchdb-pvc
+    spec:
+      storageClassName: standard
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
+      selector:
+        matchLabels:
+          volume: couchdb-volume

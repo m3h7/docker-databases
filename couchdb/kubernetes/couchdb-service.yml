@@ -1,0 +1,36 @@
+---
+# Internal Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb-service
+  namespace: database
+  labels:
+    app: couchdb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 5984
+    protocol: TCP
+    targetPort: 5984
+  selector:
+    app: couchdb
+
+---
+# Service to node port
+kind: Service
+apiVersion: v1
+metadata:
+  name: couchb-nodeport-svc
+  namespace: database
+  labels:
+    app: couchdb
+spec:
+  type: NodePort      # NodePort service
+  ports:
+  - port: 5984
+    nodePort: 30984   # external port
+    protocol: TCP
+  selector:
+    app: couchdb

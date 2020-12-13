@@ -1,0 +1,49 @@
+# Minukube local persistent volume
+# Ref: https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: couchdb-vol-1
+  labels:
+    volume: couchdb-volume
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /data/couchdb-vol-1/
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: couchdb-vol-2
+  labels:
+    volume: couchdb-volume
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+      path: /data/couchdb-vol-2/
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: couchdb-vol-3
+  labels:
+    volume: couchdb-volume
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /data/couchdb-vol-3/
