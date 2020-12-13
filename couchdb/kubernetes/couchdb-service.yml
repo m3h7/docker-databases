@@ -22,7 +22,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: couchb-nodeport-svc
+  name: couchdb-nodeport-service
   namespace: database
   labels:
     app: couchdb

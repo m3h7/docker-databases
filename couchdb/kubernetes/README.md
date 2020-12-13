@@ -13,7 +13,7 @@ kubectl apply -f couchdb-service.yml
 
 ### Get Node IP and Port
 ```
-minikube service couchb-nodeport-svc
+minikube service couchdb-nodeport-service -n database
 ```
 
 ### Cluster Configuration
