@@ -1,0 +1,37 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:2.3.0
+    ports:
+      - "8086:8086"
+    volumes:
+      - "influxdb-data:/var/lib/influxdb2"
+    networks:
+      - "influxdb"
+  telegraf:
+    image: telegraf:1.23
+    volumes:
+      - "./telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+    networks:
+      - "influxdb"
+    depends_on:
+      - "influxdb"
+  grafana:
+    image: grafana/grafana-oss:9.0.4
+    volumes:
+      - "grafana-data:/var/lib/grafana"
+      - "grafana-logs:/var/log/grafana"
+    ports:
+      - "3000:3000"
+    networks:
+      - "influxdb"
+    depends_on:
+      - "influxdb"
+
+volumes:
+  influxdb-data:
+  grafana-data:
+  grafana-logs:
+networks:
+  influxdb:
+    external: false
